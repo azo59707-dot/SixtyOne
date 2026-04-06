@@ -8,500 +8,611 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#000;font-family:Arial,sans-serif;color:#fff;min-height:100vh}
 @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-@keyframes silverShine{0%,100%{text-shadow:0 0 8px #aaa,0 0 20px #888}50%{text-shadow:0 0 22px #fff,0 0 45px #ddd,0 0 70px #ccc}}
-@keyframes scriptGlow{0%,100%{opacity:.8;text-shadow:0 0 6px #c084fc}50%{opacity:1;text-shadow:0 0 18px #e879f9,0 0 35px #c084fc}}
-@keyframes countDown{0%,100%{text-shadow:0 0 8px #c084fc}50%{text-shadow:0 0 28px #e879f9,0 0 55px #c084fc}}
-@keyframes waveFloat{0%,100%{transform:translateY(0) scaleX(1)}50%{transform:translateY(-5px) scaleX(1.02)}}
+@keyframes silverShine{0%,100%{text-shadow:0 0 8px #aaa}50%{text-shadow:0 0 22px #fff,0 0 45px #ddd}}
+@keyframes scriptGlow{0%,100%{opacity:.8}50%{opacity:1}}
+@keyframes countDown{0%,100%{opacity:.85}50%{opacity:1}}
+@keyframes waveFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
 
-.hero{position:relative;height:280px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.hero-bg{position:absolute;inset:0}
+.hero{position:relative;height:280px;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .wave-svg{position:absolute;left:0;width:100%}
-.wave-top{top:0;animation:waveFloat 4s ease-in-out infinite}
-.wave-bot{bottom:0;animation:waveFloat 4.5s ease-in-out infinite reverse}
+.wave-top{top:0;animation:waveFloat var(--wave-speed,4s) ease-in-out infinite}
+.wave-bot{bottom:0;animation:waveFloat calc(var(--wave-speed,4s) + 0.5s) ease-in-out infinite reverse}
 .logo-wrap{position:relative;z-index:10;text-align:center;animation:logoFloat 3.5s ease-in-out infinite}
-.sixty-script{display:block;font-family:Georgia,serif;font-size:20px;font-style:italic;color:#c084fc;letter-spacing:1px;animation:scriptGlow 2.5s ease-in-out infinite;text-align:left;padding-left:12px;margin-bottom:-2px}
-.sixty-main{display:block;font-size:62px;font-weight:900;background:linear-gradient(180deg,#fff 0%,#bbb 40%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;animation:silverShine 3s ease-in-out infinite;line-height:1}
+.sixty-script{display:block;font-family:Georgia,serif;font-size:20px;font-style:italic;letter-spacing:1px;animation:scriptGlow 2.5s ease-in-out infinite;text-align:left;padding-left:12px;margin-bottom:-2px}
+.sixty-main{display:block;font-weight:900;letter-spacing:3px;animation:silverShine 3s ease-in-out infinite;line-height:1;background:linear-gradient(180deg,#fff 0%,#bbb 40%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .sixty-server{display:block;font-size:14px;letter-spacing:8px;color:#888;text-align:left;padding-left:6px;margin-top:3px}
-.auth-bar{position:absolute;top:12px;left:12px;z-index:20;display:flex;gap:8px;align-items:center}
-.btn-discord{background:rgba(88,101,242,0.85);border:1px solid #5865f2;color:#fff;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
-.btn-discord:hover{background:rgba(88,101,242,1)}
-.user-chip{background:rgba(10,2,30,0.9);border:1px solid #a855f7;border-radius:20px;padding:5px 12px;font-size:12px;color:#c084fc;display:flex;align-items:center;gap:8px}
-.user-avatar{width:22px;height:22px;border-radius:50%;object-fit:cover}
-.btn-logout{background:none;border:none;color:#888;font-size:11px;cursor:pointer;margin-right:4px}
-.btn-logout:hover{color:#f87171}
-.btn-admin{background:rgba(168,85,247,0.2);border:1px solid #a855f7;color:#c084fc;padding:5px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:700}
-.btn-admin:hover{background:rgba(168,85,247,0.4)}
 
-.timer-wrap{background:#000;padding:16px 20px;text-align:center;border-bottom:1px solid rgba(168,85,247,0.25)}
-.timer-label{font-size:11px;color:#a855f7;letter-spacing:3px;margin-bottom:7px;text-transform:uppercase}
-.timer-value{font-size:40px;font-weight:900;color:#e879f9;letter-spacing:7px;animation:countDown 1s ease-in-out infinite}
+/* Settings button always visible */
+.settings-btn{position:absolute;top:12px;left:12px;z-index:20;background:rgba(88,28,135,0.7);border:1px solid rgba(168,85,247,0.6);color:#c084fc;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.settings-btn:hover{background:rgba(88,28,135,0.95)}
+.settings-btn svg{width:16px;height:16px}
+
+.timer-wrap{padding:16px 20px;text-align:center;border-bottom:1px solid rgba(168,85,247,.2)}
+.timer-label{font-size:11px;letter-spacing:3px;margin-bottom:7px;text-transform:uppercase}
+.timer-value{font-size:40px;font-weight:900;letter-spacing:7px;animation:countDown 1s ease-in-out infinite}
 .timer-units{display:flex;justify-content:center;gap:26px;margin-top:5px}
-.timer-units span{font-size:10px;color:#6b21a8;letter-spacing:2px}
-
-.tabs{display:flex;background:#0a0218;border-bottom:2px solid rgba(168,85,247,0.2)}
-.tab{flex:1;padding:12px 6px;text-align:center;color:#555;font-size:13px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
-.tab.active{color:#c084fc;border-bottom-color:#a855f7;background:rgba(168,85,247,0.08)}
-.tab:hover:not(.active){color:#999;background:rgba(168,85,247,0.04)}
-
+.timer-units span{font-size:10px;letter-spacing:2px;opacity:.6}
+.tabs{display:flex;border-bottom:2px solid rgba(168,85,247,.2)}
+.tab{flex:1;padding:12px 6px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;color:#555}
+.tab.active{border-bottom-color:var(--c-primary,#a855f7);background:rgba(168,85,247,.08);color:var(--c-primary,#c084fc)}
 .section{display:none;padding:18px;animation:fadeUp .3s ease}
 .section.active{display:block}
-
 .prize-card{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:10px;border:1px solid;margin-bottom:9px;animation:slideIn .4s ease both}
-.prize-card:nth-child(1){background:rgba(255,215,0,.07);border-color:rgba(255,215,0,.4)}
-.prize-card:nth-child(2){background:rgba(180,180,200,.07);border-color:rgba(180,180,200,.35);animation-delay:.07s}
-.prize-card:nth-child(3){background:rgba(180,100,40,.07);border-color:rgba(180,100,40,.35);animation-delay:.14s}
 .medal{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0}
 .m1{background:rgba(255,215,0,.18);color:#ffd700;border:2px solid #ffd700}
 .m2{background:rgba(180,180,200,.18);color:#c0c0d0;border:2px solid #c0c0c0}
 .m3{background:rgba(180,100,40,.18);color:#cd7f32;border:2px solid #cd7f32}
-.prize-rank{font-size:12px;color:#888;margin-bottom:2px}
-.prize-val{font-size:18px;font-weight:900}
-.pv1{color:#ffd700}.pv2{color:#c0c0d0}.pv3{color:#cd7f32}
-
-.round-label{font-size:11px;color:#c084fc;letter-spacing:2px;text-transform:uppercase;margin:14px 0 6px;text-align:center;opacity:.85}
-.match-card{background:rgba(20,5,45,.8);border:1px solid rgba(168,85,247,.2);border-radius:8px;overflow:hidden;margin-bottom:6px}
-.match-header{background:rgba(168,85,247,.12);padding:4px 12px;font-size:11px;color:#c084fc;letter-spacing:1px;text-align:center}
+.round-label{font-size:11px;color:var(--c-primary,#c084fc);letter-spacing:2px;text-transform:uppercase;margin:14px 0 6px;text-align:center;opacity:.85}
+.match-card{background:var(--c-card-bg,rgba(20,5,45,.8));border:1px solid rgba(168,85,247,.2);border-radius:8px;overflow:hidden;margin-bottom:6px}
+.match-header{background:rgba(168,85,247,.12);padding:4px 12px;font-size:11px;color:var(--c-primary,#c084fc);letter-spacing:1px;text-align:center}
 .match-row{display:flex;align-items:center;justify-content:space-between;padding:8px 13px;border-bottom:1px solid rgba(255,255,255,.04)}
 .match-row:last-child{border-bottom:none}
 .team-name{font-size:13px;font-weight:700;color:#ccc}
 .match-row.wr .team-name{color:#e9d5ff}
 .team-score{font-size:14px;font-weight:900;background:rgba(168,85,247,.15);padding:2px 9px;border-radius:5px;min-width:26px;text-align:center;color:#fff}
-.team-score.win{color:#a78bfa;background:rgba(167,139,250,.2)}
-
+.team-score.win{color:var(--c-primary,#a78bfa);background:rgba(167,139,250,.2)}
 .st-table{width:100%;border-collapse:collapse}
-.st-table th{font-size:11px;color:#c084fc;letter-spacing:1px;padding:8px 10px;text-align:right;border-bottom:1px solid rgba(168,85,247,.2)}
+.st-table th{font-size:11px;color:var(--c-primary,#c084fc);letter-spacing:1px;padding:8px 10px;text-align:right;border-bottom:1px solid rgba(168,85,247,.2)}
 .st-table td{padding:9px 10px;font-size:13px;color:#bbb;border-bottom:1px solid rgba(255,255,255,.04);text-align:right}
-.st-table tr:hover td{background:rgba(168,85,247,.06)}
-.st-table tr.r1 td{color:#ffd700}
-.st-table tr.r2 td{color:#c0c0d0}
-.st-table tr.r3 td{color:#cd7f32}
+.st-table tr.r1 td{color:#ffd700}.st-table tr.r2 td{color:#c0c0d0}.st-table tr.r3 td{color:#cd7f32}
 .rb{display:inline-block;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;font-size:11px;font-weight:900}
-.rb1{background:rgba(255,215,0,.2);color:#ffd700}
-.rb2{background:rgba(192,192,210,.2);color:#c0c0d0}
-.rb3{background:rgba(205,127,50,.2);color:#cd7f32}
-.rbn{background:rgba(255,255,255,.06);color:#888}
-
+.rb1{background:rgba(255,215,0,.2);color:#ffd700}.rb2{background:rgba(192,192,210,.2);color:#c0c0d0}.rb3{background:rgba(205,127,50,.2);color:#cd7f32}.rbn{background:rgba(255,255,255,.06);color:#888}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.ic{background:rgba(20,5,45,.7);border:1px solid rgba(168,85,247,.18);border-radius:10px;padding:13px;text-align:right}
-.ic-l{font-size:11px;color:#c084fc;letter-spacing:1px;margin-bottom:5px;opacity:.8}
+.ic{background:var(--c-card-bg,rgba(20,5,45,.7));border:1px solid rgba(168,85,247,.18);border-radius:10px;padding:13px;text-align:right}
+.ic-l{font-size:11px;color:var(--c-primary,#c084fc);letter-spacing:1px;margin-bottom:5px;opacity:.8}
 .ic-v{font-size:14px;font-weight:700;color:#e9d5ff}
-.ic-v.hi{color:#f97316;font-size:16px}
+.section-card{background:var(--c-card-bg,rgba(20,5,45,.7));border:1px solid rgba(168,85,247,.18);border-radius:12px;padding:16px;margin-bottom:12px}
+.section-card img{width:100%;border-radius:8px;margin-top:10px;object-fit:cover;max-height:220px}
+.section-title{font-size:15px;font-weight:700;color:var(--c-primary,#c084fc);margin-bottom:8px}
+.section-content{font-size:13px;color:#ccc;line-height:1.7;white-space:pre-wrap}
 
-/* Admin Panel */
-.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;overflow-y:auto;padding:20px}
+/* LOGIN MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.login-box{background:#0d0220;border:1px solid rgba(168,85,247,.4);border-radius:16px;padding:32px;width:300px;text-align:center}
+.login-box h2{color:#c084fc;font-size:18px;margin-bottom:20px}
+.login-box input{width:100%;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.3);border-radius:8px;padding:10px 14px;color:#fff;font-size:15px;margin-bottom:12px;text-align:center}
+.login-box input:focus{outline:none;border-color:#a855f7}
+.login-box button{width:100%;background:#7c3aed;border:none;color:#fff;padding:10px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer}
+.login-box button:hover{background:#9333ea}
+.login-err{color:#f87171;font-size:13px;margin-top:8px;display:none}
+.login-close{background:none;border:none;color:#555;font-size:12px;cursor:pointer;margin-top:12px;display:block;width:100%}
+
+/* ADMIN */
+.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;overflow-y:auto;padding:16px}
 .admin-overlay.open{display:block}
-.admin-panel{background:#0d0220;border:1px solid rgba(168,85,247,.3);border-radius:16px;max-width:680px;margin:0 auto;padding:24px}
-.admin-h{font-size:18px;font-weight:900;color:#c084fc;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
-.admin-close{background:none;border:none;color:#888;font-size:22px;cursor:pointer}
-.admin-close:hover{color:#f87171}
-.admin-section{margin-bottom:24px}
-.admin-section-title{font-size:13px;color:#a855f7;letter-spacing:1px;margin-bottom:10px;border-bottom:1px solid rgba(168,85,247,.2);padding-bottom:6px}
-.field-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
-.field-row label{font-size:12px;color:#888;min-width:90px;text-align:right}
-.field-row input{flex:1;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.3);border-radius:7px;padding:7px 10px;color:#fff;font-size:13px}
-.field-row input:focus{outline:none;border-color:#a855f7}
+.admin-panel{background:#0a0118;border:1px solid rgba(168,85,247,.3);border-radius:16px;max-width:760px;margin:0 auto;padding:24px}
+.admin-h{font-size:18px;font-weight:900;color:#c084fc;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.admin-close{background:none;border:none;color:#888;font-size:24px;cursor:pointer;line-height:1}
+.admin-tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid rgba(168,85,247,.2);flex-wrap:wrap}
+.atab{padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;color:#555;border-bottom:2px solid transparent;margin-bottom:-1px}
+.atab.active{color:#c084fc;border-bottom-color:#a855f7}
+.apanel{display:none}.apanel.active{display:block}
+.field-row{display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap}
+.field-row label{font-size:12px;color:#888;min-width:100px;text-align:right}
+.field-row input,.field-row select,.field-row textarea{flex:1;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.3);border-radius:7px;padding:7px 10px;color:#fff;font-size:13px;min-width:0}
+.field-row input:focus,.field-row select:focus,.field-row textarea:focus{outline:none;border-color:#a855f7}
+.field-row textarea{resize:vertical;min-height:70px}
 .btn-save{background:#7c3aed;border:none;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
 .btn-save:hover{background:#9333ea}
 .btn-danger{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.4);color:#f87171;padding:5px 11px;border-radius:6px;font-size:12px;cursor:pointer}
-.btn-danger:hover{background:rgba(220,38,38,.4)}
-.btn-add{background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.4);color:#c084fc;padding:7px 14px;border-radius:7px;font-size:13px;cursor:pointer;width:100%;margin-top:6px}
-.btn-add:hover{background:rgba(168,85,247,.35)}
-.team-row{display:flex;gap:6px;align-items:center;margin-bottom:6px;background:rgba(10,2,30,.6);border-radius:8px;padding:8px}
-.team-row input{background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px}
-.team-row input.nm{flex:2}
-.team-row input.sm{flex:1;max-width:60px;text-align:center}
-.msg{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:9px 14px;color:#86efac;font-size:13px;margin-bottom:12px;display:none}
-.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 14px;color:#fca5a5;font-size:13px;margin-bottom:12px;display:none}
-select.field-sel{flex:1;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.3);border-radius:7px;padding:7px 10px;color:#fff;font-size:13px}
+.btn-add{background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);color:#c084fc;padding:8px 14px;border-radius:7px;font-size:13px;cursor:pointer;width:100%;margin-top:8px}
+.item-row{background:rgba(10,2,30,.6);border:1px solid rgba(168,85,247,.15);border-radius:8px;padding:10px;margin-bottom:8px}
+.item-row input,.item-row select,.item-row textarea{background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px;width:100%;margin-bottom:4px}
+.item-row textarea{resize:vertical;min-height:60px}
+.item-row-actions{display:flex;gap:6px;margin-top:6px;justify-content:flex-end}
+.msg{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:8px 14px;color:#86efac;font-size:13px;margin-bottom:12px;display:none}
+.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 14px;color:#fca5a5;font-size:13px;margin-bottom:12px;display:none}
+.color-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.color-row label{font-size:12px;color:#888;flex:1}
+.color-row input[type=color]{width:44px;height:30px;padding:2px;cursor:pointer;border:1px solid rgba(168,85,247,.3);border-radius:6px;background:none}
+.color-row input[type=text]{width:90px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:4px 8px;color:#fff;font-size:12px}
+.logout-btn{background:none;border:1px solid rgba(239,68,68,.3);color:#f87171;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;margin-right:8px}
+@media(max-width:500px){.info-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-bg">
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 50%,#1e0550 0%,#0a0215 60%,#000 100%)"></div>
-  </div>
+<div class="hero" id="hero">
+  <div id="heroBg" style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 50%,#1e0550 0%,#0a0215 60%,#000 100%)"></div>
   <svg class="wave-svg wave-top" style="height:110px" viewBox="0 0 680 110" preserveAspectRatio="none">
-    <path d="M0,80 Q100,30 200,72 Q300,112 400,58 Q500,8 600,52 Q645,72 680,48 L680,0 L0,0Z" fill="#100028" opacity="0.95"/>
-    <path d="M0,88 Q130,48 260,84 Q390,118 520,68 Q610,32 680,62 L680,0 L0,0Z" fill="#0a0018" opacity="0.6"/>
-    <path d="M0,72 Q90,22 190,64 Q310,106 430,46 Q550,0 680,38" fill="none" stroke="#9333ea" stroke-width="1.5" opacity="0.5"/>
-    <path d="M0,84 Q160,46 320,80 Q480,114 640,58" fill="none" stroke="#c084fc" stroke-width="0.8" opacity="0.4"/>
+    <path id="wp1" d="M0,80 Q100,30 200,72 Q300,112 400,58 Q500,8 600,52 Q645,72 680,48 L680,0 L0,0Z" fill="#1e0550" opacity="0.95"/>
+    <path id="wp2" d="M0,88 Q130,48 260,84 Q390,118 520,68 Q610,32 680,62 L680,0 L0,0Z" fill="#4c1d95" opacity="0.6"/>
+    <path d="M0,72 Q90,22 190,64 Q310,106 430,46 Q550,0 680,38" fill="none" id="wl1" stroke="#9333ea" stroke-width="1.5" opacity="0.5"/>
+    <path d="M0,84 Q160,46 320,80 Q480,114 640,58" fill="none" id="wl2" stroke="#c084fc" stroke-width="0.8" opacity="0.4"/>
   </svg>
-  <svg class="wave-svg wave-bot" style="height:110px" viewBox="0 0 680 110" preserveAspectRatio="none">
-    <path d="M0,30 Q100,80 200,38 Q300,0 400,52 Q500,102 600,58 Q645,38 680,62 L680,110 L0,110Z" fill="#100028" opacity="0.95"/>
-    <path d="M0,22 Q130,62 260,26 Q390,0 520,42 Q610,78 680,48 L680,110 L0,110Z" fill="#0a0018" opacity="0.6"/>
-    <path d="M0,38 Q90,88 190,46 Q310,4 430,64 Q550,112 680,72" fill="none" stroke="#9333ea" stroke-width="1.5" opacity="0.5"/>
-    <path d="M0,26 Q160,64 320,30 Q480,0 640,52" fill="none" stroke="#c084fc" stroke-width="0.8" opacity="0.4"/>
-  </svg>
-  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.3" viewBox="0 0 680 280" preserveAspectRatio="none">
-    <path d="M60,60 Q220,18 380,72 Q520,120 640,55" fill="none" stroke="#d4d4e8" stroke-width="20" stroke-linecap="round" opacity="0.15"/>
-    <path d="M40,82 Q200,140 360,88 Q500,42 650,100" fill="none" stroke="#b0b0d0" stroke-width="12" stroke-linecap="round" opacity="0.1"/>
-    <path d="M60,190 Q230,230 400,178 Q540,132 650,190" fill="none" stroke="#7733cc" stroke-width="32" stroke-linecap="round" opacity="0.2"/>
-    <path d="M50,210 Q250,160 420,205 Q560,245 660,200" fill="none" stroke="#5522aa" stroke-width="18" stroke-linecap="round" opacity="0.13"/>
+  <svg class="wave-svg wave-bot" style="height:110px;bottom:0" viewBox="0 0 680 110" preserveAspectRatio="none">
+    <path id="wb1" d="M0,30 Q100,80 200,38 Q300,0 400,52 Q500,102 600,58 Q645,38 680,62 L680,110 L0,110Z" fill="#1e0550" opacity="0.95"/>
+    <path id="wb2" d="M0,22 Q130,62 260,26 Q390,0 520,42 Q610,78 680,48 L680,110 L0,110Z" fill="#4c1d95" opacity="0.6"/>
+    <path d="M0,38 Q90,88 190,46 Q310,4 430,64 Q550,112 680,72" fill="none" id="wbl1" stroke="#9333ea" stroke-width="1.5" opacity="0.5"/>
+    <path d="M0,26 Q160,64 320,30 Q480,0 640,52" fill="none" id="wbl2" stroke="#c084fc" stroke-width="0.8" opacity="0.4"/>
   </svg>
 
-  <div id="authBar" class="auth-bar"></div>
+  <button class="settings-btn" onclick="openLogin()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    إعدادات
+  </button>
 
   <div class="logo-wrap">
-    <span class="sixty-script">SixtyOne</span>
-    <span class="sixty-main" id="heroName">SixtyOne</span>
+    <span class="sixty-script" id="heroScript">SixtyOne</span>
+    <span class="sixty-main" id="heroTitle" style="font-size:62px">SixtyOne</span>
     <span class="sixty-server" id="heroServer">s e r v e r</span>
   </div>
 </div>
 
-<!-- TIMER -->
-<div class="timer-wrap">
-  <div class="timer-label">تبدأ البطولة بعد</div>
+<div class="timer-wrap" id="timerWrap">
+  <div class="timer-label" id="timerLabel">تبدأ البطولة بعد</div>
   <div class="timer-value" id="timerVal">--:--:--</div>
   <div class="timer-units"><span>ساعة</span><span>دقيقة</span><span>ثانية</span></div>
 </div>
 
-<!-- TABS -->
-<div class="tabs">
-  <div class="tab active" onclick="showTab('prizes',this)">الجوائز</div>
-  <div class="tab" onclick="showTab('bracket',this)">الأدوار</div>
-  <div class="tab" onclick="showTab('standings',this)">الترتيب</div>
-  <div class="tab" onclick="showTab('info',this)">معلومات</div>
+<div class="tabs" id="tabsBar">
+  <div class="tab active" id="tab_prizes" onclick="showTab('prizes',this)">الجوائز</div>
+  <div class="tab" id="tab_bracket" onclick="showTab('bracket',this)">الأدوار</div>
+  <div class="tab" id="tab_standings" onclick="showTab('standings',this)">الترتيب</div>
+  <div class="tab" id="tab_info" onclick="showTab('info',this)">معلومات</div>
+  <div class="tab" id="tab_sections" onclick="showTab('sections',this)" style="display:none">أقسام</div>
 </div>
 
-<div id="prizes" class="section active" style="background:#050010"></div>
-<div id="bracket" class="section" style="background:#050010"></div>
-<div id="standings" class="section" style="background:#050010"></div>
-<div id="info" class="section" style="background:#050010"></div>
+<div id="prizes" class="section active"></div>
+<div id="bracket" class="section"></div>
+<div id="standings" class="section"></div>
+<div id="info" class="section"></div>
+<div id="sections" class="section"></div>
 
-<!-- ADMIN OVERLAY -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-panel">
-    <div class="admin-h">
-      <span>لوحة التحكم</span>
-      <button class="admin-close" onclick="closeAdmin()">✕</button>
-    </div>
-    <div id="adminMsg" class="msg"></div>
-    <div id="adminErr" class="err"></div>
-
-    <!-- Settings -->
-    <div class="admin-section">
-      <div class="admin-section-title">إعدادات البطولة</div>
-      <div class="field-row"><label>اسم البطولة</label><input id="s_name" type="text"/></div>
-      <div class="field-row"><label>اسم السيرفر</label><input id="s_server" type="text"/></div>
-      <div class="field-row"><label>وقت البدء</label><input id="s_time" type="datetime-local"/></div>
-      <button class="btn-save" onclick="saveSettings()">حفظ الإعدادات</button>
-    </div>
-
-    <!-- Prizes -->
-    <div class="admin-section">
-      <div class="admin-section-title">الجوائز</div>
-      <div id="prizesAdmin"></div>
-      <button class="btn-add" onclick="addPrize()">+ إضافة جائزة</button>
-    </div>
-
-    <!-- Teams -->
-    <div class="admin-section">
-      <div class="admin-section-title">الفرق</div>
-      <div id="teamsAdmin"></div>
-      <button class="btn-add" onclick="addTeam()">+ إضافة فريق</button>
-    </div>
-
-    <!-- Matches -->
-    <div class="admin-section">
-      <div class="admin-section-title">المباريات</div>
-      <div id="matchesAdmin"></div>
-      <button class="btn-add" onclick="addMatch()">+ إضافة مباراة</button>
-    </div>
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="login-box">
+    <h2>🔐 لوحة التحكم</h2>
+    <input type="password" id="pwInput" placeholder="كلمة السر" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button onclick="doLogin()">دخول</button>
+    <div class="login-err" id="loginErr">كلمة السر خاطئة</div>
+    <button class="login-close" onclick="closeLogin()">إلغاء</button>
   </div>
 </div>
 
-<script>
-let DATA = {};
-let ME = null;
-let timerInterval;
+<!-- ADMIN OVERLAY -->
+<div class="admin-overlay" id="adminOverlay">
+<div class="admin-panel">
+  <div class="admin-h">
+    <span>⚙️ لوحة التحكم</span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="logout-btn" onclick="doLogout()">خروج</button>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+  </div>
+  <div id="adminMsg" class="msg"></div>
+  <div id="adminErr" class="err"></div>
 
-async function init() {
-  ME = await fetch('/api/me').then(r=>r.json());
+  <div class="admin-tabs">
+    <div class="atab active" onclick="showATab('aColors',this)">🎨 الألوان</div>
+    <div class="atab" onclick="showATab('aTypo',this)">✏️ الخطوط</div>
+    <div class="atab" onclick="showATab('aBg',this)">🖼️ الخلفية</div>
+    <div class="atab" onclick="showATab('aHero',this)">🏷️ الهيرو</div>
+    <div class="atab" onclick="showATab('aTimer',this)">⏱️ العداد</div>
+    <div class="atab" onclick="showATab('aTabs',this)">📑 القوائم</div>
+    <div class="atab" onclick="showATab('aTeams',this)">👥 الفرق</div>
+    <div class="atab" onclick="showATab('aPrizes',this)">🏆 الجوائز</div>
+    <div class="atab" onclick="showATab('aMatches',this)">⚽ المباريات</div>
+    <div class="atab" onclick="showATab('aSections',this)">📋 أقسام</div>
+  </div>
+
+  <!-- COLORS -->
+  <div id="aColors" class="apanel active">
+    <div class="color-row"><label>لون الخلفية</label><input type="color" id="c_bg" oninput="syncC('c_bg','c_bg_t')"/><input type="text" id="c_bg_t" maxlength="7" oninput="syncCT('c_bg_t','c_bg')"/></div>
+    <div class="color-row"><label>اللون الأساسي</label><input type="color" id="c_primary" oninput="syncC('c_primary','c_primary_t')"/><input type="text" id="c_primary_t" maxlength="7" oninput="syncCT('c_primary_t','c_primary')"/></div>
+    <div class="color-row"><label>لون العداد</label><input type="color" id="c_timer" oninput="syncC('c_timer','c_timer_t')"/><input type="text" id="c_timer_t" maxlength="7" oninput="syncCT('c_timer_t','c_timer')"/></div>
+    <div class="color-row"><label>لون مميز</label><input type="color" id="c_accent" oninput="syncC('c_accent','c_accent_t')"/><input type="text" id="c_accent_t" maxlength="7" oninput="syncCT('c_accent_t','c_accent')"/></div>
+    <div class="color-row"><label>لون الكروت</label><input type="color" id="c_card_bg" oninput="syncC('c_card_bg','c_card_bg_t')"/><input type="text" id="c_card_bg_t" maxlength="7" oninput="syncCT('c_card_bg_t','c_card_bg')"/></div>
+    <div class="color-row"><label>لون الموجة 1</label><input type="color" id="c_wave1" oninput="syncC('c_wave1','c_wave1_t')"/><input type="text" id="c_wave1_t" maxlength="7" oninput="syncCT('c_wave1_t','c_wave1')"/></div>
+    <div class="color-row"><label>لون الموجة 2</label><input type="color" id="c_wave2" oninput="syncC('c_wave2','c_wave2_t')"/><input type="text" id="c_wave2_t" maxlength="7" oninput="syncCT('c_wave2_t','c_wave2')"/></div>
+    <button class="btn-save" onclick="saveSettings({color_bg:gv('c_bg'),color_primary:gv('c_primary'),color_timer:gv('c_timer'),color_accent:gv('c_accent'),color_card_bg:gv('c_card_bg'),color_wave1:gv('c_wave1'),color_wave2:gv('c_wave2')})">حفظ الألوان</button>
+  </div>
+
+  <!-- TYPO -->
+  <div id="aTypo" class="apanel">
+    <div class="field-row"><label>نوع الخط</label>
+      <select id="t_font"><option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Verdana">Verdana</option><option value="Tahoma">Tahoma</option><option value="Impact">Impact</option><option value="Courier New">Courier New</option></select>
+    </div>
+    <div class="field-row"><label>حجم العنوان</label><input type="number" id="t_title_size" min="20" max="120"/></div>
+    <div class="field-row"><label>حجم النص</label><input type="number" id="t_body_size" min="10" max="30"/></div>
+    <div class="field-row"><label>ثقل العنوان</label>
+      <select id="t_weight"><option value="400">عادي</option><option value="700">عريض</option><option value="900">أعرض</option></select>
+    </div>
+    <div class="color-row"><label>لون العنوان الكبير</label><input type="color" id="t_title_c" oninput="syncC('t_title_c','t_title_ct')"/><input type="text" id="t_title_ct" maxlength="7" oninput="syncCT('t_title_ct','t_title_c')"/></div>
+    <div class="color-row"><label>لون السكريبت</label><input type="color" id="t_sub_c" oninput="syncC('t_sub_c','t_sub_ct')"/><input type="text" id="t_sub_ct" maxlength="7" oninput="syncCT('t_sub_ct','t_sub_c')"/></div>
+    <button class="btn-save" onclick="saveSettings({font_family:gv('t_font'),font_size_title:gv('t_title_size'),font_size_body:gv('t_body_size'),font_weight_title:gv('t_weight'),title_color:gv('t_title_c'),subtitle_color:gv('t_sub_c')})">حفظ الخطوط</button>
+  </div>
+
+  <!-- BG -->
+  <div id="aBg" class="apanel">
+    <div class="field-row"><label>نوع الخلفية</label>
+      <select id="bg_type" onchange="toggleBgType()">
+        <option value="wave">موجات متحركة</option>
+        <option value="image">صورة</option>
+        <option value="solid">لون ثابت</option>
+      </select>
+    </div>
+    <div id="bgImgRow" class="field-row" style="display:none"><label>رابط الصورة</label><input type="text" id="bg_img" placeholder="https://..."/></div>
+    <div class="field-row"><label>الشفافية</label><input type="range" id="bg_op" min="0.1" max="1" step="0.05" oninput="document.getElementById('bg_op_v').textContent=this.value"/><span id="bg_op_v" style="color:#888;font-size:12px;min-width:32px">1</span></div>
+    <div id="waveCtrl" class="field-row"><label>سرعة الموجة</label><input type="range" id="wave_spd" min="1" max="12" step="0.5" oninput="document.getElementById('wave_spd_v').textContent=this.value+'s'"/><span id="wave_spd_v" style="color:#888;font-size:12px;min-width:32px">4s</span></div>
+    <button class="btn-save" onclick="saveSettings({bg_type:gv('bg_type'),bg_image_url:gv('bg_img'),bg_opacity:gv('bg_op'),wave_speed:gv('wave_spd')})">حفظ الخلفية</button>
+  </div>
+
+  <!-- HERO -->
+  <div id="aHero" class="apanel">
+    <div class="field-row"><label>اسم البطولة</label><input type="text" id="h_tour"/></div>
+    <div class="field-row"><label>العنوان الكبير</label><input type="text" id="h_title"/></div>
+    <div class="field-row"><label>النص المائل</label><input type="text" id="h_script"/></div>
+    <div class="field-row"><label>نص السيرفر</label><input type="text" id="h_server"/></div>
+    <button class="btn-save" onclick="saveSettings({tournament_name:gv('h_tour'),hero_title:gv('h_title'),hero_script_text:gv('h_script'),hero_server_text:gv('h_server')})">حفظ</button>
+  </div>
+
+  <!-- TIMER -->
+  <div id="aTimer" class="apanel">
+    <div class="field-row"><label>وقت البدء</label><input type="datetime-local" id="tm_time"/></div>
+    <div class="field-row"><label>نص العداد</label><input type="text" id="tm_label"/></div>
+    <div class="color-row"><label>لون العداد</label><input type="color" id="tm_c" oninput="syncC('tm_c','tm_ct')"/><input type="text" id="tm_ct" maxlength="7" oninput="syncCT('tm_ct','tm_c')"/></div>
+    <div class="field-row"><label>إظهار العداد</label><select id="tm_show"><option value="1">نعم</option><option value="0">لا</option></select></div>
+    <button class="btn-save" onclick="saveTimer()">حفظ</button>
+  </div>
+
+  <!-- TABS -->
+  <div id="aTabs" class="apanel">
+    <div class="field-row"><label>تبويب الجوائز</label><input type="text" id="tb_p"/></div>
+    <div class="field-row"><label>تبويب الأدوار</label><input type="text" id="tb_b"/></div>
+    <div class="field-row"><label>تبويب الترتيب</label><input type="text" id="tb_s"/></div>
+    <div class="field-row"><label>تبويب المعلومات</label><input type="text" id="tb_i"/></div>
+    <button class="btn-save" onclick="saveSettings({tab_prizes_label:gv('tb_p'),tab_bracket_label:gv('tb_b'),tab_standings_label:gv('tb_s'),tab_info_label:gv('tb_i')})">حفظ</button>
+  </div>
+
+  <!-- TEAMS -->
+  <div id="aTeams" class="apanel"><div id="teamsAdmin"></div><button class="btn-add" onclick="addTeam()">+ إضافة فريق</button></div>
+
+  <!-- PRIZES -->
+  <div id="aPrizes" class="apanel"><div id="prizesAdmin"></div><button class="btn-add" onclick="addPrize()">+ إضافة جائزة</button></div>
+
+  <!-- MATCHES -->
+  <div id="aMatches" class="apanel"><div id="matchesAdmin"></div><button class="btn-add" onclick="addMatch()">+ إضافة مباراة</button></div>
+
+  <!-- SECTIONS -->
+  <div id="aSections" class="apanel">
+    <p style="color:#888;font-size:12px;margin-bottom:10px">أقسام إضافية مع صور تظهر في تبويب منفصل</p>
+    <div id="sectionsAdmin"></div>
+    <button class="btn-add" onclick="addSection()">+ إضافة قسم</button>
+  </div>
+</div>
+</div>
+
+<script>
+let DATA={},IS_ADMIN=false,timerInterval;
+
+async function init(){
+  const me=await fetch('/api/me').then(r=>r.json());
+  IS_ADMIN=me.admin||false;
   await loadData();
-  renderAuth();
   startTimer();
-  setInterval(loadData, 30000);
+  setInterval(loadData,30000);
 }
 
-async function loadData() {
-  DATA = await fetch('/api/public').then(r=>r.json());
+async function loadData(){
+  DATA=await fetch('/api/public').then(r=>r.json());
+  applyTheme();
   renderAll();
 }
 
-function renderAll() {
-  const s = DATA.settings || {};
-  // Hero
-  const nameEl = document.getElementById('heroName');
-  const serverEl = document.getElementById('heroServer');
-  if (nameEl) nameEl.textContent = s.server_name || 'SixtyOne';
-  if (serverEl) {
-    const parts = (s.server_name || 'server').toLowerCase().split('');
-    serverEl.textContent = parts.join(' ');
-  }
-  document.title = s.tournament_name || 'SixtyOne Tournament';
-  renderPrizes();
-  renderBracket();
-  renderStandings();
-  renderInfo();
+function gv(id){const e=document.getElementById(id);return e?e.value:'';}
+function sv(id,v){const e=document.getElementById(id);if(e)e.value=v;}
+function syncC(cid,tid){const c=document.getElementById(cid),t=document.getElementById(tid);if(c&&t)t.value=c.value;}
+function syncCT(tid,cid){const t=document.getElementById(tid),c=document.getElementById(cid);if(t&&c&&/^#[0-9a-fA-F]{6}$/.test(t.value))c.value=t.value;}
+
+function applyTheme(){
+  const s=DATA.settings||{};
+  document.body.style.background=s.color_bg||'#000';
+  document.body.style.fontFamily=s.font_family||'Arial';
+  document.documentElement.style.setProperty('--c-primary',s.color_primary||'#c084fc');
+  document.documentElement.style.setProperty('--c-card-bg',s.color_card_bg||'rgba(20,5,45,.7)');
+  document.documentElement.style.setProperty('--wave-speed',(s.wave_speed||4)+'s');
+  // BG
+  const hb=document.getElementById('heroBg');
+  if(s.bg_type==='image'&&s.bg_image_url){hb.style.background=`url(${s.bg_image_url}) center/cover no-repeat`;hb.style.opacity=s.bg_opacity||1;}
+  else if(s.bg_type==='solid'){hb.style.background=s.color_bg||'#000';hb.style.opacity=1;}
+  else{hb.style.background=`radial-gradient(ellipse 80% 70% at 50% 50%,${s.color_wave2||'#1e0550'} 0%,${s.color_wave1||'#0a0215'} 60%,${s.color_bg||'#000'} 100%)`;hb.style.opacity=s.bg_opacity||1;}
+  // Waves
+  ['wp1','wb1'].forEach(id=>{const e=document.getElementById(id);if(e)e.setAttribute('fill',s.color_wave1||'#1e0550');});
+  ['wp2','wb2'].forEach(id=>{const e=document.getElementById(id);if(e)e.setAttribute('fill',s.color_wave2||'#4c1d95');});
+  ['wl1','wbl1'].forEach(id=>{const e=document.getElementById(id);if(e)e.setAttribute('stroke',s.color_primary||'#9333ea');});
+  ['wl2','wbl2'].forEach(id=>{const e=document.getElementById(id);if(e)e.setAttribute('stroke',s.color_primary||'#c084fc');});
+  // Title
+  const te=document.getElementById('heroTitle');
+  if(te){te.style.fontSize=(s.font_size_title||62)+'px';te.style.fontWeight=s.font_weight_title||900;}
+  const se=document.getElementById('heroScript');
+  if(se)se.style.color=s.subtitle_color||'#c084fc';
+  // Timer
+  const tv=document.getElementById('timerVal');if(tv)tv.style.color=s.timer_color||'#e879f9';
+  const tl=document.getElementById('timerLabel');if(tl){tl.style.color=s.color_primary||'#a855f7';tl.textContent=s.timer_label||'تبدأ البطولة بعد';}
+  const tw=document.getElementById('timerWrap');if(tw)tw.style.display=s.show_timer==='0'?'none':'block';
+  // Tabs
+  const tmap={tab_prizes:'tab_prizes_label',tab_bracket:'tab_bracket_label',tab_standings:'tab_standings_label',tab_info:'tab_info_label'};
+  for(const[id,key] of Object.entries(tmap)){const e=document.getElementById(id);if(e&&s[key])e.textContent=s[key];}
+  // Sections tab
+  const st=document.getElementById('tab_sections');if(st)st.style.display=(DATA.sections&&DATA.sections.length)?'block':'none';
 }
 
-function renderPrizes() {
-  const prizes = DATA.prizes || [];
-  const medals = ['m1','m2','m3'];
-  const pvCls = ['pv1','pv2','pv3'];
-  let h = '';
-  prizes.forEach((p,i) => {
-    h += `<div class="prize-card"><div class="medal ${medals[i]||'m3'}">${p.rank}</div><div style="flex:1;text-align:right"><div class="prize-rank">${p.label}</div><div class="prize-val ${pvCls[i]||'pv3'}">${p.value}</div></div></div>`;
-  });
-  document.getElementById('prizes').innerHTML = h || '<p style="color:#555;text-align:center;padding:30px">لا توجد جوائز محددة</p>';
+function renderAll(){
+  const s=DATA.settings||{};
+  document.title=s.tournament_name||'SixtyOne Tournament';
+  const te=document.getElementById('heroTitle');if(te)te.textContent=s.hero_title||'SixtyOne';
+  const se=document.getElementById('heroScript');if(se)se.textContent=s.hero_script_text||'SixtyOne';
+  const sre=document.getElementById('heroServer');if(sre)sre.textContent=(s.hero_server_text||'server').split('').join(' ');
+  renderPrizes();renderBracket();renderStandings();renderInfo();renderSections();
 }
 
-function renderBracket() {
-  const matches = DATA.matches || [];
-  const rounds = [...new Set(matches.map(m=>m.round))];
-  let h = '';
-  rounds.forEach(round => {
-    const rms = matches.filter(m=>m.round===round);
-    h += `<div class="round-label">${round}</div><div style="display:grid;grid-template-columns:${rms.length>1?'1fr 1fr':'1fr'};gap:8px">`;
-    rms.forEach(m => {
-      const w1 = m.done && m.score1 > m.score2;
-      const w2 = m.done && m.score2 > m.score1;
-      const final = round.includes('نهائي الكبير') || round.includes('Final');
-      const cardStyle = final ? 'border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.04)' : '';
-      const headerStyle = final ? 'background:rgba(255,215,0,.12);color:#ffd700' : '';
-      const scoreDisp = m.done ? m.score1 : '-';
-      const scoreDisp2 = m.done ? m.score2 : '-';
-      h += `<div class="match-card" style="${cardStyle}">
-        <div class="match-header" style="${headerStyle}">${round}</div>
-        <div class="match-row ${w1?'wr':''}"><span class="team-name">${m.team1}</span><span class="team-score ${w1?'win':''}">${scoreDisp}</span></div>
-        <div class="match-row ${w2?'wr':''}"><span class="team-name">${m.team2}</span><span class="team-score ${w2?'win':''}">${scoreDisp2}</span></div>
+function renderPrizes(){
+  const prizes=DATA.prizes||[];
+  const bg=['rgba(255,215,0,.07)','rgba(180,180,200,.07)','rgba(180,100,40,.07)'];
+  const bc=['rgba(255,215,0,.4)','rgba(180,180,200,.35)','rgba(180,100,40,.35)'];
+  const mc=['m1','m2','m3'];
+  const vc=['#ffd700','#c0c0d0','#cd7f32'];
+  let h=prizes.map((p,i)=>`<div class="prize-card" style="background:${bg[i]||bg[2]};border-color:${bc[i]||bc[2]};animation-delay:${i*.07}s">
+    <div class="medal ${mc[i]||'m3'}">${p.rank}</div>
+    <div style="flex:1;text-align:right"><div style="font-size:12px;color:#888;margin-bottom:2px">${p.label}</div>
+    <div style="font-size:18px;font-weight:900;color:${vc[i]||'#cd7f32'}">${p.value}</div></div></div>`).join('');
+  document.getElementById('prizes').innerHTML=h||'<p style="color:#555;text-align:center;padding:30px">لا توجد جوائز</p>';
+}
+
+function renderBracket(){
+  const matches=DATA.matches||[];
+  const rounds=[...new Set(matches.map(m=>m.round))];
+  let h='';
+  rounds.forEach(round=>{
+    const rms=matches.filter(m=>m.round===round);
+    const isF=round.includes('النهائي الكبير');
+    h+=`<div class="round-label">${round}</div><div style="display:grid;grid-template-columns:${rms.length>1?'1fr 1fr':'1fr'};gap:8px">`;
+    rms.forEach(m=>{
+      const w1=m.done&&m.score1>m.score2,w2=m.done&&m.score2>m.score1;
+      h+=`<div class="match-card" style="${isF?'border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.04)':''}">
+        <div class="match-header" style="${isF?'background:rgba(255,215,0,.12);color:#ffd700':''}">${round}</div>
+        <div class="match-row ${w1?'wr':''}"><span class="team-name">${m.team1}</span><span class="team-score ${w1?'win':''}">${m.done?m.score1:'-'}</span></div>
+        <div class="match-row ${w2?'wr':''}"><span class="team-name">${m.team2}</span><span class="team-score ${w2?'win':''}">${m.done?m.score2:'-'}</span></div>
       </div>`;
     });
-    h += '</div>';
+    h+='</div>';
   });
-  document.getElementById('bracket').innerHTML = h || '<p style="color:#555;text-align:center;padding:30px">لا توجد مباريات بعد</p>';
+  document.getElementById('bracket').innerHTML=h||'<p style="color:#555;text-align:center;padding:30px">لا توجد مباريات</p>';
 }
 
-function renderStandings() {
-  const teams = DATA.teams || [];
-  if (!teams.length) { document.getElementById('standings').innerHTML = '<p style="color:#555;text-align:center;padding:30px">لا توجد فرق بعد</p>'; return; }
-  let h = '<table class="st-table"><thead><tr><th>#</th><th>الفريق</th><th>فوز</th><th>خسارة</th><th>نقاط</th></tr></thead><tbody>';
-  teams.forEach((t,i) => {
-    const rc = i===0?'r1':i===1?'r2':i===2?'r3':'';
-    const rb = i===0?'rb1':i===1?'rb2':i===2?'rb3':'rbn';
-    h += `<tr class="${rc}"><td><span class="rb ${rb}">${i+1}</span></td><td>${t.name}</td><td>${t.wins}</td><td>${t.losses}</td><td>${t.points}</td></tr>`;
+function renderStandings(){
+  const teams=DATA.teams||[];
+  if(!teams.length){document.getElementById('standings').innerHTML='<p style="color:#555;text-align:center;padding:30px">لا توجد فرق</p>';return;}
+  let h='<table class="st-table"><thead><tr><th>#</th><th>الفريق</th><th>فوز</th><th>خسارة</th><th>نقاط</th></tr></thead><tbody>';
+  teams.forEach((t,i)=>{
+    const rc=i===0?'r1':i===1?'r2':i===2?'r3':'',rb=i===0?'rb1':i===1?'rb2':i===2?'rb3':'rbn';
+    h+=`<tr class="${rc}"><td><span class="rb ${rb}">${i+1}</span></td><td>${t.name}</td><td>${t.wins}</td><td>${t.losses}</td><td>${t.points}</td></tr>`;
   });
-  h += '</tbody></table>';
-  document.getElementById('standings').innerHTML = h;
+  document.getElementById('standings').innerHTML=h+'</tbody></table>';
 }
 
-function renderInfo() {
-  const s = DATA.settings || {};
-  const teams = DATA.teams || [];
-  document.getElementById('info').innerHTML = `
-    <div class="info-grid">
-      <div class="ic"><div class="ic-l">اسم البطولة</div><div class="ic-v">${s.tournament_name||'-'}</div></div>
-      <div class="ic"><div class="ic-l">الفرق المسجلة</div><div class="ic-v hi">${teams.length} / ${s.max_teams||8}</div></div>
-      <div class="ic"><div class="ic-l">المنظم</div><div class="ic-v">${s.server_name||'-'}</div></div>
-      <div class="ic"><div class="ic-l">الجائزة الكبرى</div><div class="ic-v hi">${(DATA.prizes||[])[0]?.value||'-'}</div></div>
-      <div class="ic"><div class="ic-l">الحالة</div><div class="ic-v" style="color:#a78bfa">جاري التسجيل</div></div>
-      <div class="ic"><div class="ic-l">النظام</div><div class="ic-v">1 vs 1</div></div>
-    </div>`;
+function renderInfo(){
+  const s=DATA.settings||{},teams=DATA.teams||[],acc=s.color_accent||'#f97316';
+  document.getElementById('info').innerHTML=`<div class="info-grid">
+    <div class="ic"><div class="ic-l">اسم البطولة</div><div class="ic-v">${s.tournament_name||'-'}</div></div>
+    <div class="ic"><div class="ic-l">الفرق المسجلة</div><div class="ic-v" style="color:${acc};font-size:16px">${teams.length} / ${s.max_teams||8}</div></div>
+    <div class="ic"><div class="ic-l">المنظم</div><div class="ic-v">${s.server_name||'-'}</div></div>
+    <div class="ic"><div class="ic-l">الجائزة الكبرى</div><div class="ic-v" style="color:${acc};font-size:16px">${(DATA.prizes||[])[0]?.value||'-'}</div></div>
+    <div class="ic"><div class="ic-l">الحالة</div><div class="ic-v" style="color:var(--c-primary)">جاري التسجيل</div></div>
+    <div class="ic"><div class="ic-l">النظام</div><div class="ic-v">1 vs 1</div></div>
+  </div>`;
 }
 
-function renderAuth() {
-  const bar = document.getElementById('authBar');
-  if (!ME) {
-    bar.innerHTML = `<a class="btn-discord" href="/auth/discord">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.036.055A19.9 19.9 0 0 0 5.116 20.1a.077.077 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 5.007-2.045.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-      سجّل بـ Discord
-    </a>`;
-  } else {
-    const adminBtn = ME.is_admin ? `<button class="btn-admin" onclick="openAdmin()">الأدمن</button>` : '';
-    const avatarUrl = ME.avatar ? `https://cdn.discordapp.com/avatars/${ME.discord_id}/${ME.avatar}.png` : '';
-    const avatarHtml = avatarUrl ? `<img class="user-avatar" src="${avatarUrl}" alt=""/>` : '';
-    bar.innerHTML = `<div class="user-chip">${avatarHtml}<span>${ME.username}</span><button class="btn-logout" onclick="location.href='/auth/logout'">خروج</button></div>${adminBtn}`;
-  }
+function renderSections(){
+  const secs=DATA.sections||[];
+  document.getElementById('sections').innerHTML=secs.length?secs.map(s=>`<div class="section-card">
+    <div class="section-title">${s.title}</div>
+    <div class="section-content">${s.content||''}</div>
+    ${s.image_url?`<img src="${s.image_url}" alt="${s.title}" loading="lazy"/>`:''}
+  </div>`).join(''):'<p style="color:#555;text-align:center;padding:30px">لا توجد أقسام</p>';
 }
 
-// Timer
-function startTimer() {
-  if (timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(tickTimer, 1000);
-  tickTimer();
-}
-function tickTimer() {
-  const s = DATA.settings || {};
-  const startTime = s.start_time ? new Date(s.start_time).getTime() : 0;
-  const diff = Math.max(0, Math.floor((startTime - Date.now()) / 1000));
-  const h = Math.floor(diff / 3600);
-  const m = Math.floor((diff % 3600) / 60);
-  const sec = diff % 60;
-  const el = document.getElementById('timerVal');
-  if (el) el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+function startTimer(){if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(tickTimer,1000);tickTimer();}
+function tickTimer(){
+  const st=DATA.settings?.start_time?new Date(DATA.settings.start_time).getTime():0;
+  const diff=Math.max(0,Math.floor((st-Date.now())/1000));
+  const h=Math.floor(diff/3600),m=Math.floor((diff%3600)/60),s=diff%60;
+  const el=document.getElementById('timerVal');
+  if(el)el.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-// Tabs
-function showTab(id, el) {
+function showTab(id,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById(id).classList.add('active');
+  el.classList.add('active');document.getElementById(id).classList.add('active');
 }
 
-// Admin
-function openAdmin() {
-  const s = DATA.settings || {};
-  document.getElementById('s_name').value = s.tournament_name || '';
-  document.getElementById('s_server').value = s.server_name || '';
-  if (s.start_time) {
-    const d = new Date(s.start_time);
-    const local = new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,16);
-    document.getElementById('s_time').value = local;
-  }
-  renderPrizesAdmin();
-  renderTeamsAdmin();
-  renderMatchesAdmin();
+// LOGIN
+function openLogin(){
+  if(IS_ADMIN){openAdmin();return;}
+  document.getElementById('loginModal').classList.add('open');
+  setTimeout(()=>document.getElementById('pwInput').focus(),100);
+}
+function closeLogin(){document.getElementById('loginModal').classList.remove('open');}
+async function doLogin(){
+  const pw=document.getElementById('pwInput').value;
+  const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});
+  if(r.ok){IS_ADMIN=true;closeLogin();document.getElementById('pwInput').value='';openAdmin();}
+  else{const e=document.getElementById('loginErr');e.style.display='block';setTimeout(()=>e.style.display='none',2000);}
+}
+async function doLogout(){
+  await fetch('/api/logout',{method:'POST'});
+  IS_ADMIN=false;closeAdmin();
+}
+
+// ADMIN
+function openAdmin(){
+  const s=DATA.settings||{};
+  // Colors
+  const cm={c_bg:'color_bg',c_primary:'color_primary',c_timer:'color_timer',c_accent:'color_accent',c_card_bg:'color_card_bg',c_wave1:'color_wave1',c_wave2:'color_wave2'};
+  for(const[id,k] of Object.entries(cm)){const v=s[k]||'#000000';sv(id,v);sv(id+'_t',v);}
+  // Typo
+  sv('t_font',s.font_family||'Arial');sv('t_title_size',s.font_size_title||62);sv('t_body_size',s.font_size_body||14);sv('t_weight',s.font_weight_title||'900');
+  const tc=s.title_color||'#ffffff';sv('t_title_c',tc);sv('t_title_ct',tc);
+  const sc=s.subtitle_color||'#c084fc';sv('t_sub_c',sc);sv('t_sub_ct',sc);
+  // BG
+  sv('bg_type',s.bg_type||'wave');sv('bg_img',s.bg_image_url||'');sv('bg_op',s.bg_opacity||1);
+  document.getElementById('bg_op_v').textContent=s.bg_opacity||1;
+  sv('wave_spd',s.wave_speed||4);document.getElementById('wave_spd_v').textContent=(s.wave_speed||4)+'s';
+  toggleBgType();
+  // Hero
+  sv('h_tour',s.tournament_name||'');sv('h_title',s.hero_title||'');sv('h_script',s.hero_script_text||'');sv('h_server',s.hero_server_text||'');
+  // Timer
+  if(s.start_time){const d=new Date(s.start_time);sv('tm_time',new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16));}
+  sv('tm_label',s.timer_label||'');const tc2=s.timer_color||'#e879f9';sv('tm_c',tc2);sv('tm_ct',tc2);sv('tm_show',s.show_timer||'1');
+  // Tabs
+  sv('tb_p',s.tab_prizes_label||'الجوائز');sv('tb_b',s.tab_bracket_label||'الأدوار');sv('tb_s',s.tab_standings_label||'الترتيب');sv('tb_i',s.tab_info_label||'معلومات');
+  renderTeamsAdmin();renderPrizesAdmin();renderMatchesAdmin();renderSectionsAdmin();
   document.getElementById('adminOverlay').classList.add('open');
 }
-function closeAdmin() {
-  document.getElementById('adminOverlay').classList.remove('open');
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');}
+function showATab(id,el){
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');document.getElementById(id).classList.add('active');
+  if(id==='aTeams')renderTeamsAdmin();
+  if(id==='aPrizes')renderPrizesAdmin();
+  if(id==='aMatches')renderMatchesAdmin();
+  if(id==='aSections')renderSectionsAdmin();
 }
-function showMsg(txt) {
-  const el = document.getElementById('adminMsg');
-  el.textContent = txt; el.style.display='block';
-  setTimeout(()=>el.style.display='none', 3000);
+function toggleBgType(){const t=gv('bg_type');document.getElementById('bgImgRow').style.display=t==='image'?'flex':'none';document.getElementById('waveCtrl').style.display=t==='wave'?'flex':'none';}
+function showMsg(t){const e=document.getElementById('adminMsg');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2500);}
+function showErr(t){const e=document.getElementById('adminErr');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',3500);}
+
+async function saveSettings(body){
+  const r=await fetch('/api/admin/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(r.ok){showMsg('✅ تم الحفظ');await loadData();}else showErr('❌ فشل الحفظ');
 }
-function showErr(txt) {
-  const el = document.getElementById('adminErr');
-  el.textContent = txt; el.style.display='block';
-  setTimeout(()=>el.style.display='none', 4000);
+async function saveTimer(){
+  const body={start_time:new Date(gv('tm_time')).toISOString(),timer_label:gv('tm_label'),timer_color:gv('tm_c'),show_timer:gv('tm_show')};
+  const r=await fetch('/api/admin/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(r.ok){showMsg('✅ تم الحفظ');await loadData();startTimer();}else showErr('❌ فشل');
 }
 
-async function saveSettings() {
-  const body = {
-    tournament_name: document.getElementById('s_name').value,
-    server_name: document.getElementById('s_server').value,
-    start_time: new Date(document.getElementById('s_time').value).toISOString(),
-  };
-  const r = await fetch('/api/admin/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if (r.ok) { showMsg('تم الحفظ'); await loadData(); }
-  else showErr('فشل الحفظ');
-}
-
-// Prizes Admin
-function renderPrizesAdmin() {
-  const prizes = DATA.prizes || [];
-  let h = '';
-  prizes.forEach(p => {
-    h += `<div class="team-row">
-      <input class="nm" value="${p.label}" id="pl_${p.rank}" placeholder="اسم المركز"/>
-      <input class="nm" value="${p.value}" id="pv_${p.rank}" placeholder="الجائزة"/>
-      <button class="btn-save" onclick="savePrize(${p.rank})" style="padding:5px 10px;font-size:12px">حفظ</button>
-      <button class="btn-danger" onclick="deletePrize(${p.rank})">حذف</button>
-    </div>`;
-  });
-  document.getElementById('prizesAdmin').innerHTML = h;
-}
-async function savePrize(rank) {
-  const label = document.getElementById('pl_'+rank).value;
-  const value = document.getElementById('pv_'+rank).value;
-  const r = await fetch('/api/admin/prizes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank,label,value})});
-  if (r.ok) { showMsg('تم حفظ الجائزة'); await loadData(); renderPrizesAdmin(); }
-  else showErr('فشل');
-}
-async function deletePrize(rank) {
-  const r = await fetch('/api/admin/prizes/'+rank,{method:'DELETE'});
-  if (r.ok) { showMsg('تم الحذف'); await loadData(); renderPrizesAdmin(); }
-  else showErr('فشل');
-}
-function addPrize() {
-  const prizes = DATA.prizes || [];
-  const newRank = (prizes[prizes.length-1]?.rank || 0) + 1;
-  fetch('/api/admin/prizes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank:newRank,label:`المركز ${newRank}`,value:'-'})})
-    .then(()=>loadData().then(()=>renderPrizesAdmin()));
-}
-
-// Teams Admin
-function renderTeamsAdmin() {
-  const teams = DATA.teams || [];
-  let h = '';
-  teams.forEach(t => {
-    h += `<div class="team-row">
-      <input class="nm" value="${t.name}" id="tn_${t.id}" placeholder="اسم الفريق"/>
-      <input class="sm" type="number" value="${t.wins}" id="tw_${t.id}" placeholder="فوز"/>
-      <input class="sm" type="number" value="${t.losses}" id="tl_${t.id}" placeholder="خسارة"/>
-      <input class="sm" type="number" value="${t.points}" id="tp_${t.id}" placeholder="نقاط"/>
-      <button class="btn-save" onclick="saveTeam(${t.id})" style="padding:5px 10px;font-size:12px">حفظ</button>
+// Teams
+function renderTeamsAdmin(){
+  const teams=DATA.teams||[];
+  document.getElementById('teamsAdmin').innerHTML=teams.length?teams.map(t=>`<div class="item-row">
+    <input value="${t.name}" id="tn_${t.id}" placeholder="اسم الفريق"/>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+      <input type="number" value="${t.wins}" id="tw_${t.id}" placeholder="فوز"/>
+      <input type="number" value="${t.losses}" id="tl_${t.id}" placeholder="خسارة"/>
+      <input type="number" value="${t.points}" id="tp_${t.id}" placeholder="نقاط"/>
+    </div>
+    <div class="item-row-actions">
+      <button class="btn-save" style="padding:5px 12px;font-size:12px" onclick="saveTeam(${t.id})">حفظ</button>
       <button class="btn-danger" onclick="deleteTeam(${t.id})">حذف</button>
-    </div>`;
-  });
-  document.getElementById('teamsAdmin').innerHTML = h;
+    </div></div>`).join(''):'<p style="color:#555;font-size:12px;text-align:center;padding:10px">لا توجد فرق</p>';
 }
-async function saveTeam(id) {
-  const body = {
-    name: document.getElementById('tn_'+id).value,
-    wins: parseInt(document.getElementById('tw_'+id).value)||0,
-    losses: parseInt(document.getElementById('tl_'+id).value)||0,
-    points: parseInt(document.getElementById('tp_'+id).value)||0,
-  };
-  const r = await fetch('/api/admin/teams/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if (r.ok) { showMsg('تم حفظ الفريق'); await loadData(); renderTeamsAdmin(); renderAll(); }
-  else showErr('فشل');
+async function saveTeam(id){
+  const r=await fetch('/api/admin/teams/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:gv('tn_'+id),wins:+gv('tw_'+id)||0,losses:+gv('tl_'+id)||0,points:+gv('tp_'+id)||0})});
+  if(r.ok){showMsg('✅ تم');await loadData();renderTeamsAdmin();renderAll();}else showErr('❌ فشل');
 }
-async function deleteTeam(id) {
-  const r = await fetch('/api/admin/teams/'+id,{method:'DELETE'});
-  if (r.ok) { showMsg('تم الحذف'); await loadData(); renderTeamsAdmin(); renderAll(); }
-  else showErr('فشل');
+async function deleteTeam(id){
+  if(!confirm('حذف الفريق؟'))return;
+  const r=await fetch('/api/admin/teams/'+id,{method:'DELETE'});
+  if(r.ok){showMsg('✅ حُذف');await loadData();renderTeamsAdmin();renderAll();}else showErr('❌ فشل');
 }
-function addTeam() {
-  fetch('/api/admin/teams',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'فريق جديد',wins:0,losses:0,points:0})})
-    .then(()=>loadData().then(()=>renderTeamsAdmin()));
+async function addTeam(){
+  await fetch('/api/admin/teams',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'فريق جديد',wins:0,losses:0,points:0})});
+  await loadData();renderTeamsAdmin();
 }
 
-// Matches Admin
-function renderMatchesAdmin() {
-  const matches = DATA.matches || [];
-  let h = '';
-  matches.forEach(m => {
-    h += `<div class="team-row" style="flex-wrap:wrap;gap:4px">
-      <input style="flex:1;min-width:100px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px" value="${m.round}" id="mr_${m.id}" placeholder="الدور"/>
-      <input style="flex:1;min-width:80px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px" value="${m.team1}" id="mt1_${m.id}" placeholder="فريق 1"/>
-      <input style="width:40px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 6px;color:#fff;font-size:12px;text-align:center" value="${m.score1}" id="ms1_${m.id}" type="number"/>
-      <input style="width:40px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 6px;color:#fff;font-size:12px;text-align:center" value="${m.score2}" id="ms2_${m.id}" type="number"/>
-      <input style="flex:1;min-width:80px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px" value="${m.team2}" id="mt2_${m.id}" placeholder="فريق 2"/>
-      <label style="font-size:11px;color:#888;display:flex;align-items:center;gap:4px"><input type="checkbox" id="md_${m.id}" ${m.done?'checked':''}/> منتهية</label>
-      <button class="btn-save" onclick="saveMatch(${m.id})" style="padding:5px 10px;font-size:12px">حفظ</button>
+// Prizes
+function renderPrizesAdmin(){
+  const prizes=DATA.prizes||[];
+  document.getElementById('prizesAdmin').innerHTML=prizes.length?prizes.map(p=>`<div class="item-row">
+    <input value="${p.label}" id="pl_${p.rank}" placeholder="اسم المركز"/>
+    <input value="${p.value}" id="pv_${p.rank}" placeholder="الجائزة"/>
+    <div class="item-row-actions">
+      <button class="btn-save" style="padding:5px 12px;font-size:12px" onclick="savePrize(${p.rank})">حفظ</button>
+      <button class="btn-danger" onclick="deletePrize(${p.rank})">حذف</button>
+    </div></div>`).join(''):'<p style="color:#555;font-size:12px;text-align:center;padding:10px">لا توجد جوائز</p>';
+}
+async function savePrize(rank){
+  const r=await fetch('/api/admin/prizes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank,label:gv('pl_'+rank),value:gv('pv_'+rank)})});
+  if(r.ok){showMsg('✅ تم');await loadData();renderPrizesAdmin();}else showErr('❌ فشل');
+}
+async function deletePrize(rank){
+  if(!confirm('حذف الجائزة؟'))return;
+  const r=await fetch('/api/admin/prizes/'+rank,{method:'DELETE'});
+  if(r.ok){showMsg('✅ حُذف');await loadData();renderPrizesAdmin();}else showErr('❌ فشل');
+}
+async function addPrize(){
+  const prizes=DATA.prizes||[];
+  const nr=(prizes[prizes.length-1]?.rank||0)+1;
+  await fetch('/api/admin/prizes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank:nr,label:`المركز ${nr}`,value:'-'})});
+  await loadData();renderPrizesAdmin();
+}
+
+// Matches
+function renderMatchesAdmin(){
+  const matches=DATA.matches||[];
+  document.getElementById('matchesAdmin').innerHTML=matches.length?matches.map(m=>`<div class="item-row">
+    <input value="${m.round}" id="mr_${m.id}" placeholder="الدور (مثال: ربع النهائي)"/>
+    <div style="display:grid;grid-template-columns:1fr 50px 50px 1fr;gap:5px;align-items:center">
+      <input value="${m.team1}" id="mt1_${m.id}" placeholder="فريق 1"/>
+      <input type="number" value="${m.score1}" id="ms1_${m.id}" style="text-align:center"/>
+      <input type="number" value="${m.score2}" id="ms2_${m.id}" style="text-align:center"/>
+      <input value="${m.team2}" id="mt2_${m.id}" placeholder="فريق 2"/>
+    </div>
+    <label style="font-size:12px;color:#888;display:flex;align-items:center;gap:6px;margin-top:4px"><input type="checkbox" id="md_${m.id}" ${m.done?'checked':''}/> المباراة منتهية</label>
+    <div class="item-row-actions">
+      <button class="btn-save" style="padding:5px 12px;font-size:12px" onclick="saveMatch(${m.id})">حفظ</button>
       <button class="btn-danger" onclick="deleteMatch(${m.id})">حذف</button>
-    </div>`;
-  });
-  document.getElementById('matchesAdmin').innerHTML = h;
+    </div></div>`).join(''):'<p style="color:#555;font-size:12px;text-align:center;padding:10px">لا توجد مباريات</p>';
 }
-async function saveMatch(id) {
-  const body = {
-    round: document.getElementById('mr_'+id).value,
-    team1: document.getElementById('mt1_'+id).value,
-    team2: document.getElementById('mt2_'+id).value,
-    score1: parseInt(document.getElementById('ms1_'+id).value)||0,
-    score2: parseInt(document.getElementById('ms2_'+id).value)||0,
-    done: document.getElementById('md_'+id).checked,
-  };
-  const r = await fetch('/api/admin/matches/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if (r.ok) { showMsg('تم حفظ المباراة'); await loadData(); renderMatchesAdmin(); renderBracket(); }
-  else showErr('فشل');
+async function saveMatch(id){
+  const done=document.getElementById('md_'+id)?.checked;
+  const r=await fetch('/api/admin/matches/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({round:gv('mr_'+id),team1:gv('mt1_'+id),team2:gv('mt2_'+id),score1:+gv('ms1_'+id)||0,score2:+gv('ms2_'+id)||0,done})});
+  if(r.ok){showMsg('✅ تم');await loadData();renderMatchesAdmin();renderBracket();}else showErr('❌ فشل');
 }
-async function deleteMatch(id) {
-  const r = await fetch('/api/admin/matches/'+id,{method:'DELETE'});
-  if (r.ok) { showMsg('تم الحذف'); await loadData(); renderMatchesAdmin(); renderBracket(); }
-  else showErr('فشل');
+async function deleteMatch(id){
+  if(!confirm('حذف المباراة؟'))return;
+  const r=await fetch('/api/admin/matches/'+id,{method:'DELETE'});
+  if(r.ok){showMsg('✅ حُذف');await loadData();renderMatchesAdmin();renderBracket();}else showErr('❌ فشل');
 }
-function addMatch() {
-  fetch('/api/admin/matches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({round:'ربع النهائي',team1:'فريق 1',team2:'فريق 2',score1:0,score2:0,done:false})})
-    .then(()=>loadData().then(()=>renderMatchesAdmin()));
+async function addMatch(){
+  await fetch('/api/admin/matches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({round:'ربع النهائي',team1:'فريق 1',team2:'فريق 2',score1:0,score2:0,done:false})});
+  await loadData();renderMatchesAdmin();
+}
+
+// Sections
+function renderSectionsAdmin(){
+  const secs=DATA.sections||[];
+  document.getElementById('sectionsAdmin').innerHTML=secs.length?secs.map(s=>`<div class="item-row">
+    <input value="${s.title||''}" id="st_${s.id}" placeholder="عنوان القسم"/>
+    <textarea id="sc_${s.id}" placeholder="النص...">${s.content||''}</textarea>
+    <input value="${s.image_url||''}" id="si_${s.id}" placeholder="رابط الصورة https://... (اختياري)"/>
+    <input type="number" value="${s.sort_order||0}" id="so_${s.id}" placeholder="الترتيب"/>
+    <label style="font-size:12px;color:#888;display:flex;align-items:center;gap:6px;margin-top:4px"><input type="checkbox" id="sv_${s.id}" ${s.visible?'checked':''}/> ظاهر</label>
+    <div class="item-row-actions">
+      <button class="btn-save" style="padding:5px 12px;font-size:12px" onclick="saveSection(${s.id})">حفظ</button>
+      <button class="btn-danger" onclick="deleteSection(${s.id})">حذف</button>
+    </div></div>`).join(''):'<p style="color:#555;font-size:12px;text-align:center;padding:10px">لا توجد أقسام</p>';
+}
+async function saveSection(id){
+  const vis=document.getElementById('sv_'+id)?.checked?1:0;
+  const r=await fetch('/api/admin/sections/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:gv('st_'+id),content:gv('sc_'+id),image_url:gv('si_'+id),sort_order:+gv('so_'+id)||0,visible:vis})});
+  if(r.ok){showMsg('✅ تم');await loadData();renderSectionsAdmin();renderSections();}else showErr('❌ فشل');
+}
+async function deleteSection(id){
+  if(!confirm('حذف القسم؟'))return;
+  const r=await fetch('/api/admin/sections/'+id,{method:'DELETE'});
+  if(r.ok){showMsg('✅ حُذف');await loadData();renderSectionsAdmin();renderSections();}else showErr('❌ فشل');
+}
+async function addSection(){
+  await fetch('/api/admin/sections',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:'قسم جديد',content:'',image_url:'',sort_order:0,visible:1})});
+  await loadData();renderSectionsAdmin();
 }
 
 init();
