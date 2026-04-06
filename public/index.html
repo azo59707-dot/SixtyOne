@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SixtyOne Tournament</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;font-family:Arial,sans-serif;color:#fff;min-height:100vh}
+@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes silverShine{0%,100%{text-shadow:0 0 8px #aaa,0 0 20px #888}50%{text-shadow:0 0 22px #fff,0 0 45px #ddd,0 0 70px #ccc}}
+@keyframes scriptGlow{0%,100%{opacity:.8;text-shadow:0 0 6px #c084fc}50%{opacity:1;text-shadow:0 0 18px #e879f9,0 0 35px #c084fc}}
+@keyframes countDown{0%,100%{text-shadow:0 0 8px #c084fc}50%{text-shadow:0 0 28px #e879f9,0 0 55px #c084fc}}
+@keyframes waveFloat{0%,100%{transform:translateY(0) scaleX(1)}50%{transform:translateY(-5px) scaleX(1.02)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+
+.hero{position:relative;height:280px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.hero-bg{position:absolute;inset:0}
+.wave-svg{position:absolute;left:0;width:100%}
+.wave-top{top:0;animation:waveFloat 4s ease-in-out infinite}
+.wave-bot{bottom:0;animation:waveFloat 4.5s ease-in-out infinite reverse}
+.logo-wrap{position:relative;z-index:10;text-align:center;animation:logoFloat 3.5s ease-in-out infinite}
+.sixty-script{display:block;font-family:Georgia,serif;font-size:20px;font-style:italic;color:#c084fc;letter-spacing:1px;animation:scriptGlow 2.5s ease-in-out infinite;text-align:left;padding-left:12px;margin-bottom:-2px}
+.sixty-main{display:block;font-size:62px;font-weight:900;background:linear-gradient(180deg,#fff 0%,#bbb 40%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;animation:silverShine 3s ease-in-out infinite;line-height:1}
+.sixty-server{display:block;font-size:14px;letter-spacing:8px;color:#888;text-align:left;padding-left:6px;margin-top:3px}
+.auth-bar{position:absolute;top:12px;left:12px;z-index:20;display:flex;gap:8px;align-items:center}
+.btn-discord{background:rgba(88,101,242,0.85);border:1px solid #5865f2;color:#fff;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
+.btn-discord:hover{background:rgba(88,101,242,1)}
+.user-chip{background:rgba(10,2,30,0.9);border:1px solid #a855f7;border-radius:20px;padding:5px 12px;font-size:12px;color:#c084fc;display:flex;align-items:center;gap:8px}
+.user-avatar{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.btn-logout{background:none;border:none;color:#888;font-size:11px;cursor:pointer;margin-right:4px}
+.btn-logout:hover{color:#f87171}
+.btn-admin{background:rgba(168,85,247,0.2);border:1px solid #a855f7;color:#c084fc;padding:5px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:700}
+.btn-admin:hover{background:rgba(168,85,247,0.4)}
+
+.timer-wrap{background:#000;padding:16px 20px;text-align:center;border-bottom:1px solid rgba(168,85,247,0.25)}
+.timer-label{font-size:11px;color:#a855f7;letter-spacing:3px;margin-bottom:7px;text-transform:uppercase}
+.timer-value{font-size:40px;font-weight:900;color:#e879f9;letter-spacing:7px;animation:countDown 1s ease-in-out infinite}
+.timer-units{display:flex;justify-content:center;gap:26px;margin-top:5px}
+.timer-units span{font-size:10px;color:#6b21a8;letter-spacing:2px}
+
+.tabs{display:flex;background:#0a0218;border-bottom:2px solid rgba(168,85,247,0.2)}
+.tab{flex:1;padding:12px 6px;text-align:center;color:#555;font-size:13px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.tab.active{color:#c084fc;border-bottom-color:#a855f7;background:rgba(168,85,247,0.08)}
+.tab:hover:not(.active){color:#999;background:rgba(168,85,247,0.04)}
+
+.section{display:none;padding:18px;animation:fadeUp .3s ease}
+.section.active{display:block}
+
+.prize-card{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:10px;border:1px solid;margin-bottom:9px;animation:slideIn .4s ease both}
+.prize-card:nth-child(1){background:rgba(255,215,0,.07);border-color:rgba(255,215,0,.4)}
+.prize-card:nth-child(2){background:rgba(180,180,200,.07);border-color:rgba(180,180,200,.35);animation-delay:.07s}
+.prize-card:nth-child(3){background:rgba(180,100,40,.07);border-color:rgba(180,100,40,.35);animation-delay:.14s}
+.medal{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0}
+.m1{background:rgba(255,215,0,.18);color:#ffd700;border:2px solid #ffd700}
+.m2{background:rgba(180,180,200,.18);color:#c0c0d0;border:2px solid #c0c0c0}
+.m3{background:rgba(180,100,40,.18);color:#cd7f32;border:2px solid #cd7f32}
+.prize-rank{font-size:12px;color:#888;margin-bottom:2px}
+.prize-val{font-size:18px;font-weight:900}
+.pv1{color:#ffd700}.pv2{color:#c0c0d0}.pv3{color:#cd7f32}
+
+.round-label{font-size:11px;color:#c084fc;letter-spacing:2px;text-transform:uppercase;margin:14px 0 6px;text-align:center;opacity:.85}
+.match-card{background:rgba(20,5,45,.8);border:1px solid rgba(168,85,247,.2);border-radius:8px;overflow:hidden;margin-bottom:6px}
+.match-header{background:rgba(168,85,247,.12);padding:4px 12px;font-size:11px;color:#c084fc;letter-spacing:1px;text-align:center}
+.match-row{display:flex;align-items:center;justify-content:space-between;padding:8px 13px;border-bottom:1px solid rgba(255,255,255,.04)}
+.match-row:last-child{border-bottom:none}
+.team-name{font-size:13px;font-weight:700;color:#ccc}
+.match-row.wr .team-name{color:#e9d5ff}
+.team-score{font-size:14px;font-weight:900;background:rgba(168,85,247,.15);padding:2px 9px;border-radius:5px;min-width:26px;text-align:center;color:#fff}
+.team-score.win{color:#a78bfa;background:rgba(167,139,250,.2)}
+
+.st-table{width:100%;border-collapse:collapse}
+.st-table th{font-size:11px;color:#c084fc;letter-spacing:1px;padding:8px 10px;text-align:right;border-bottom:1px solid rgba(168,85,247,.2)}
+.st-table td{padding:9px 10px;font-size:13px;color:#bbb;border-bottom:1px solid rgba(255,255,255,.04);text-align:right}
+.st-table tr:hover td{background:rgba(168,85,247,.06)}
+.st-table tr.r1 td{color:#ffd700}
+.st-table tr.r2 td{color:#c0c0d0}
+.st-table tr.r3 td{color:#cd7f32}
+.rb{display:inline-block;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;font-size:11px;font-weight:900}
+.rb1{background:rgba(255,215,0,.2);color:#ffd700}
+.rb2{background:rgba(192,192,210,.2);color:#c0c0d0}
+.rb3{background:rgba(205,127,50,.2);color:#cd7f32}
+.rbn{background:rgba(255,255,255,.06);color:#888}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.ic{background:rgba(20,5,45,.7);border:1px solid rgba(168,85,247,.18);border-radius:10px;padding:13px;text-align:right}
+.ic-l{font-size:11px;color:#c084fc;letter-spacing:1px;margin-bottom:5px;opacity:.8}
+.ic-v{font-size:14px;font-weight:700;color:#e9d5ff}
+.ic-v.hi{color:#f97316;font-size:16px}
+
+/* Admin Panel */
+.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;overflow-y:auto;padding:20px}
+.admin-overlay.open{display:block}
+.admin-panel{background:#0d0220;border:1px solid rgba(168,85,247,.3);border-radius:16px;max-width:680px;margin:0 auto;padding:24px}
+.admin-h{font-size:18px;font-weight:900;color:#c084fc;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.admin-close{background:none;border:none;color:#888;font-size:22px;cursor:pointer}
+.admin-close:hover{color:#f87171}
+.admin-section{margin-bottom:24px}
+.admin-section-title{font-size:13px;color:#a855f7;letter-spacing:1px;margin-bottom:10px;border-bottom:1px solid rgba(168,85,247,.2);padding-bottom:6px}
+.field-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.field-row label{font-size:12px;color:#888;min-width:90px;text-align:right}
+.field-row input{flex:1;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.3);border-radius:7px;padding:7px 10px;color:#fff;font-size:13px}
+.field-row input:focus{outline:none;border-color:#a855f7}
+.btn-save{background:#7c3aed;border:none;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-save:hover{background:#9333ea}
+.btn-danger{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.4);color:#f87171;padding:5px 11px;border-radius:6px;font-size:12px;cursor:pointer}
+.btn-danger:hover{background:rgba(220,38,38,.4)}
+.btn-add{background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.4);color:#c084fc;padding:7px 14px;border-radius:7px;font-size:13px;cursor:pointer;width:100%;margin-top:6px}
+.btn-add:hover{background:rgba(168,85,247,.35)}
+.team-row{display:flex;gap:6px;align-items:center;margin-bottom:6px;background:rgba(10,2,30,.6);border-radius:8px;padding:8px}
+.team-row input{background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px}
+.team-row input.nm{flex:2}
+.team-row input.sm{flex:1;max-width:60px;text-align:center}
+.msg{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:9px 14px;color:#86efac;font-size:13px;margin-bottom:12px;display:none}
+.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 14px;color:#fca5a5;font-size:13px;margin-bottom:12px;display:none}
+select.field-sel{flex:1;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.3);border-radius:7px;padding:7px 10px;color:#fff;font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 50%,#1e0550 0%,#0a0215 60%,#000 100%)"></div>
+  </div>
+  <svg class="wave-svg wave-top" style="height:110px" viewBox="0 0 680 110" preserveAspectRatio="none">
+    <path d="M0,80 Q100,30 200,72 Q300,112 400,58 Q500,8 600,52 Q645,72 680,48 L680,0 L0,0Z" fill="#100028" opacity="0.95"/>
+    <path d="M0,88 Q130,48 260,84 Q390,118 520,68 Q610,32 680,62 L680,0 L0,0Z" fill="#0a0018" opacity="0.6"/>
+    <path d="M0,72 Q90,22 190,64 Q310,106 430,46 Q550,0 680,38" fill="none" stroke="#9333ea" stroke-width="1.5" opacity="0.5"/>
+    <path d="M0,84 Q160,46 320,80 Q480,114 640,58" fill="none" stroke="#c084fc" stroke-width="0.8" opacity="0.4"/>
+  </svg>
+  <svg class="wave-svg wave-bot" style="height:110px" viewBox="0 0 680 110" preserveAspectRatio="none">
+    <path d="M0,30 Q100,80 200,38 Q300,0 400,52 Q500,102 600,58 Q645,38 680,62 L680,110 L0,110Z" fill="#100028" opacity="0.95"/>
+    <path d="M0,22 Q130,62 260,26 Q390,0 520,42 Q610,78 680,48 L680,110 L0,110Z" fill="#0a0018" opacity="0.6"/>
+    <path d="M0,38 Q90,88 190,46 Q310,4 430,64 Q550,112 680,72" fill="none" stroke="#9333ea" stroke-width="1.5" opacity="0.5"/>
+    <path d="M0,26 Q160,64 320,30 Q480,0 640,52" fill="none" stroke="#c084fc" stroke-width="0.8" opacity="0.4"/>
+  </svg>
+  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.3" viewBox="0 0 680 280" preserveAspectRatio="none">
+    <path d="M60,60 Q220,18 380,72 Q520,120 640,55" fill="none" stroke="#d4d4e8" stroke-width="20" stroke-linecap="round" opacity="0.15"/>
+    <path d="M40,82 Q200,140 360,88 Q500,42 650,100" fill="none" stroke="#b0b0d0" stroke-width="12" stroke-linecap="round" opacity="0.1"/>
+    <path d="M60,190 Q230,230 400,178 Q540,132 650,190" fill="none" stroke="#7733cc" stroke-width="32" stroke-linecap="round" opacity="0.2"/>
+    <path d="M50,210 Q250,160 420,205 Q560,245 660,200" fill="none" stroke="#5522aa" stroke-width="18" stroke-linecap="round" opacity="0.13"/>
+  </svg>
+
+  <div id="authBar" class="auth-bar"></div>
+
+  <div class="logo-wrap">
+    <span class="sixty-script">SixtyOne</span>
+    <span class="sixty-main" id="heroName">SixtyOne</span>
+    <span class="sixty-server" id="heroServer">s e r v e r</span>
+  </div>
+</div>
+
+<!-- TIMER -->
+<div class="timer-wrap">
+  <div class="timer-label">تبدأ البطولة بعد</div>
+  <div class="timer-value" id="timerVal">--:--:--</div>
+  <div class="timer-units"><span>ساعة</span><span>دقيقة</span><span>ثانية</span></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('prizes',this)">الجوائز</div>
+  <div class="tab" onclick="showTab('bracket',this)">الأدوار</div>
+  <div class="tab" onclick="showTab('standings',this)">الترتيب</div>
+  <div class="tab" onclick="showTab('info',this)">معلومات</div>
+</div>
+
+<div id="prizes" class="section active" style="background:#050010"></div>
+<div id="bracket" class="section" style="background:#050010"></div>
+<div id="standings" class="section" style="background:#050010"></div>
+<div id="info" class="section" style="background:#050010"></div>
+
+<!-- ADMIN OVERLAY -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="admin-h">
+      <span>لوحة التحكم</span>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div id="adminMsg" class="msg"></div>
+    <div id="adminErr" class="err"></div>
+
+    <!-- Settings -->
+    <div class="admin-section">
+      <div class="admin-section-title">إعدادات البطولة</div>
+      <div class="field-row"><label>اسم البطولة</label><input id="s_name" type="text"/></div>
+      <div class="field-row"><label>اسم السيرفر</label><input id="s_server" type="text"/></div>
+      <div class="field-row"><label>وقت البدء</label><input id="s_time" type="datetime-local"/></div>
+      <button class="btn-save" onclick="saveSettings()">حفظ الإعدادات</button>
+    </div>
+
+    <!-- Prizes -->
+    <div class="admin-section">
+      <div class="admin-section-title">الجوائز</div>
+      <div id="prizesAdmin"></div>
+      <button class="btn-add" onclick="addPrize()">+ إضافة جائزة</button>
+    </div>
+
+    <!-- Teams -->
+    <div class="admin-section">
+      <div class="admin-section-title">الفرق</div>
+      <div id="teamsAdmin"></div>
+      <button class="btn-add" onclick="addTeam()">+ إضافة فريق</button>
+    </div>
+
+    <!-- Matches -->
+    <div class="admin-section">
+      <div class="admin-section-title">المباريات</div>
+      <div id="matchesAdmin"></div>
+      <button class="btn-add" onclick="addMatch()">+ إضافة مباراة</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let DATA = {};
+let ME = null;
+let timerInterval;
+
+async function init() {
+  ME = await fetch('/api/me').then(r=>r.json());
+  await loadData();
+  renderAuth();
+  startTimer();
+  setInterval(loadData, 30000);
+}
+
+async function loadData() {
+  DATA = await fetch('/api/public').then(r=>r.json());
+  renderAll();
+}
+
+function renderAll() {
+  const s = DATA.settings || {};
+  // Hero
+  const nameEl = document.getElementById('heroName');
+  const serverEl = document.getElementById('heroServer');
+  if (nameEl) nameEl.textContent = s.server_name || 'SixtyOne';
+  if (serverEl) {
+    const parts = (s.server_name || 'server').toLowerCase().split('');
+    serverEl.textContent = parts.join(' ');
+  }
+  document.title = s.tournament_name || 'SixtyOne Tournament';
+  renderPrizes();
+  renderBracket();
+  renderStandings();
+  renderInfo();
+}
+
+function renderPrizes() {
+  const prizes = DATA.prizes || [];
+  const medals = ['m1','m2','m3'];
+  const pvCls = ['pv1','pv2','pv3'];
+  let h = '';
+  prizes.forEach((p,i) => {
+    h += `<div class="prize-card"><div class="medal ${medals[i]||'m3'}">${p.rank}</div><div style="flex:1;text-align:right"><div class="prize-rank">${p.label}</div><div class="prize-val ${pvCls[i]||'pv3'}">${p.value}</div></div></div>`;
+  });
+  document.getElementById('prizes').innerHTML = h || '<p style="color:#555;text-align:center;padding:30px">لا توجد جوائز محددة</p>';
+}
+
+function renderBracket() {
+  const matches = DATA.matches || [];
+  const rounds = [...new Set(matches.map(m=>m.round))];
+  let h = '';
+  rounds.forEach(round => {
+    const rms = matches.filter(m=>m.round===round);
+    h += `<div class="round-label">${round}</div><div style="display:grid;grid-template-columns:${rms.length>1?'1fr 1fr':'1fr'};gap:8px">`;
+    rms.forEach(m => {
+      const w1 = m.done && m.score1 > m.score2;
+      const w2 = m.done && m.score2 > m.score1;
+      const final = round.includes('نهائي الكبير') || round.includes('Final');
+      const cardStyle = final ? 'border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.04)' : '';
+      const headerStyle = final ? 'background:rgba(255,215,0,.12);color:#ffd700' : '';
+      const scoreDisp = m.done ? m.score1 : '-';
+      const scoreDisp2 = m.done ? m.score2 : '-';
+      h += `<div class="match-card" style="${cardStyle}">
+        <div class="match-header" style="${headerStyle}">${round}</div>
+        <div class="match-row ${w1?'wr':''}"><span class="team-name">${m.team1}</span><span class="team-score ${w1?'win':''}">${scoreDisp}</span></div>
+        <div class="match-row ${w2?'wr':''}"><span class="team-name">${m.team2}</span><span class="team-score ${w2?'win':''}">${scoreDisp2}</span></div>
+      </div>`;
+    });
+    h += '</div>';
+  });
+  document.getElementById('bracket').innerHTML = h || '<p style="color:#555;text-align:center;padding:30px">لا توجد مباريات بعد</p>';
+}
+
+function renderStandings() {
+  const teams = DATA.teams || [];
+  if (!teams.length) { document.getElementById('standings').innerHTML = '<p style="color:#555;text-align:center;padding:30px">لا توجد فرق بعد</p>'; return; }
+  let h = '<table class="st-table"><thead><tr><th>#</th><th>الفريق</th><th>فوز</th><th>خسارة</th><th>نقاط</th></tr></thead><tbody>';
+  teams.forEach((t,i) => {
+    const rc = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    const rb = i===0?'rb1':i===1?'rb2':i===2?'rb3':'rbn';
+    h += `<tr class="${rc}"><td><span class="rb ${rb}">${i+1}</span></td><td>${t.name}</td><td>${t.wins}</td><td>${t.losses}</td><td>${t.points}</td></tr>`;
+  });
+  h += '</tbody></table>';
+  document.getElementById('standings').innerHTML = h;
+}
+
+function renderInfo() {
+  const s = DATA.settings || {};
+  const teams = DATA.teams || [];
+  document.getElementById('info').innerHTML = `
+    <div class="info-grid">
+      <div class="ic"><div class="ic-l">اسم البطولة</div><div class="ic-v">${s.tournament_name||'-'}</div></div>
+      <div class="ic"><div class="ic-l">الفرق المسجلة</div><div class="ic-v hi">${teams.length} / ${s.max_teams||8}</div></div>
+      <div class="ic"><div class="ic-l">المنظم</div><div class="ic-v">${s.server_name||'-'}</div></div>
+      <div class="ic"><div class="ic-l">الجائزة الكبرى</div><div class="ic-v hi">${(DATA.prizes||[])[0]?.value||'-'}</div></div>
+      <div class="ic"><div class="ic-l">الحالة</div><div class="ic-v" style="color:#a78bfa">جاري التسجيل</div></div>
+      <div class="ic"><div class="ic-l">النظام</div><div class="ic-v">1 vs 1</div></div>
+    </div>`;
+}
+
+function renderAuth() {
+  const bar = document.getElementById('authBar');
+  if (!ME) {
+    bar.innerHTML = `<a class="btn-discord" href="/auth/discord">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.036.055A19.9 19.9 0 0 0 5.116 20.1a.077.077 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 5.007-2.045.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      سجّل بـ Discord
+    </a>`;
+  } else {
+    const adminBtn = ME.is_admin ? `<button class="btn-admin" onclick="openAdmin()">الأدمن</button>` : '';
+    const avatarUrl = ME.avatar ? `https://cdn.discordapp.com/avatars/${ME.discord_id}/${ME.avatar}.png` : '';
+    const avatarHtml = avatarUrl ? `<img class="user-avatar" src="${avatarUrl}" alt=""/>` : '';
+    bar.innerHTML = `<div class="user-chip">${avatarHtml}<span>${ME.username}</span><button class="btn-logout" onclick="location.href='/auth/logout'">خروج</button></div>${adminBtn}`;
+  }
+}
+
+// Timer
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(tickTimer, 1000);
+  tickTimer();
+}
+function tickTimer() {
+  const s = DATA.settings || {};
+  const startTime = s.start_time ? new Date(s.start_time).getTime() : 0;
+  const diff = Math.max(0, Math.floor((startTime - Date.now()) / 1000));
+  const h = Math.floor(diff / 3600);
+  const m = Math.floor((diff % 3600) / 60);
+  const sec = diff % 60;
+  const el = document.getElementById('timerVal');
+  if (el) el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+// Tabs
+function showTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// Admin
+function openAdmin() {
+  const s = DATA.settings || {};
+  document.getElementById('s_name').value = s.tournament_name || '';
+  document.getElementById('s_server').value = s.server_name || '';
+  if (s.start_time) {
+    const d = new Date(s.start_time);
+    const local = new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+    document.getElementById('s_time').value = local;
+  }
+  renderPrizesAdmin();
+  renderTeamsAdmin();
+  renderMatchesAdmin();
+  document.getElementById('adminOverlay').classList.add('open');
+}
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+}
+function showMsg(txt) {
+  const el = document.getElementById('adminMsg');
+  el.textContent = txt; el.style.display='block';
+  setTimeout(()=>el.style.display='none', 3000);
+}
+function showErr(txt) {
+  const el = document.getElementById('adminErr');
+  el.textContent = txt; el.style.display='block';
+  setTimeout(()=>el.style.display='none', 4000);
+}
+
+async function saveSettings() {
+  const body = {
+    tournament_name: document.getElementById('s_name').value,
+    server_name: document.getElementById('s_server').value,
+    start_time: new Date(document.getElementById('s_time').value).toISOString(),
+  };
+  const r = await fetch('/api/admin/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (r.ok) { showMsg('تم الحفظ'); await loadData(); }
+  else showErr('فشل الحفظ');
+}
+
+// Prizes Admin
+function renderPrizesAdmin() {
+  const prizes = DATA.prizes || [];
+  let h = '';
+  prizes.forEach(p => {
+    h += `<div class="team-row">
+      <input class="nm" value="${p.label}" id="pl_${p.rank}" placeholder="اسم المركز"/>
+      <input class="nm" value="${p.value}" id="pv_${p.rank}" placeholder="الجائزة"/>
+      <button class="btn-save" onclick="savePrize(${p.rank})" style="padding:5px 10px;font-size:12px">حفظ</button>
+      <button class="btn-danger" onclick="deletePrize(${p.rank})">حذف</button>
+    </div>`;
+  });
+  document.getElementById('prizesAdmin').innerHTML = h;
+}
+async function savePrize(rank) {
+  const label = document.getElementById('pl_'+rank).value;
+  const value = document.getElementById('pv_'+rank).value;
+  const r = await fetch('/api/admin/prizes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank,label,value})});
+  if (r.ok) { showMsg('تم حفظ الجائزة'); await loadData(); renderPrizesAdmin(); }
+  else showErr('فشل');
+}
+async function deletePrize(rank) {
+  const r = await fetch('/api/admin/prizes/'+rank,{method:'DELETE'});
+  if (r.ok) { showMsg('تم الحذف'); await loadData(); renderPrizesAdmin(); }
+  else showErr('فشل');
+}
+function addPrize() {
+  const prizes = DATA.prizes || [];
+  const newRank = (prizes[prizes.length-1]?.rank || 0) + 1;
+  fetch('/api/admin/prizes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rank:newRank,label:`المركز ${newRank}`,value:'-'})})
+    .then(()=>loadData().then(()=>renderPrizesAdmin()));
+}
+
+// Teams Admin
+function renderTeamsAdmin() {
+  const teams = DATA.teams || [];
+  let h = '';
+  teams.forEach(t => {
+    h += `<div class="team-row">
+      <input class="nm" value="${t.name}" id="tn_${t.id}" placeholder="اسم الفريق"/>
+      <input class="sm" type="number" value="${t.wins}" id="tw_${t.id}" placeholder="فوز"/>
+      <input class="sm" type="number" value="${t.losses}" id="tl_${t.id}" placeholder="خسارة"/>
+      <input class="sm" type="number" value="${t.points}" id="tp_${t.id}" placeholder="نقاط"/>
+      <button class="btn-save" onclick="saveTeam(${t.id})" style="padding:5px 10px;font-size:12px">حفظ</button>
+      <button class="btn-danger" onclick="deleteTeam(${t.id})">حذف</button>
+    </div>`;
+  });
+  document.getElementById('teamsAdmin').innerHTML = h;
+}
+async function saveTeam(id) {
+  const body = {
+    name: document.getElementById('tn_'+id).value,
+    wins: parseInt(document.getElementById('tw_'+id).value)||0,
+    losses: parseInt(document.getElementById('tl_'+id).value)||0,
+    points: parseInt(document.getElementById('tp_'+id).value)||0,
+  };
+  const r = await fetch('/api/admin/teams/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (r.ok) { showMsg('تم حفظ الفريق'); await loadData(); renderTeamsAdmin(); renderAll(); }
+  else showErr('فشل');
+}
+async function deleteTeam(id) {
+  const r = await fetch('/api/admin/teams/'+id,{method:'DELETE'});
+  if (r.ok) { showMsg('تم الحذف'); await loadData(); renderTeamsAdmin(); renderAll(); }
+  else showErr('فشل');
+}
+function addTeam() {
+  fetch('/api/admin/teams',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'فريق جديد',wins:0,losses:0,points:0})})
+    .then(()=>loadData().then(()=>renderTeamsAdmin()));
+}
+
+// Matches Admin
+function renderMatchesAdmin() {
+  const matches = DATA.matches || [];
+  let h = '';
+  matches.forEach(m => {
+    h += `<div class="team-row" style="flex-wrap:wrap;gap:4px">
+      <input style="flex:1;min-width:100px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px" value="${m.round}" id="mr_${m.id}" placeholder="الدور"/>
+      <input style="flex:1;min-width:80px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px" value="${m.team1}" id="mt1_${m.id}" placeholder="فريق 1"/>
+      <input style="width:40px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 6px;color:#fff;font-size:12px;text-align:center" value="${m.score1}" id="ms1_${m.id}" type="number"/>
+      <input style="width:40px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 6px;color:#fff;font-size:12px;text-align:center" value="${m.score2}" id="ms2_${m.id}" type="number"/>
+      <input style="flex:1;min-width:80px;background:rgba(20,5,45,.9);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:5px 8px;color:#fff;font-size:12px" value="${m.team2}" id="mt2_${m.id}" placeholder="فريق 2"/>
+      <label style="font-size:11px;color:#888;display:flex;align-items:center;gap:4px"><input type="checkbox" id="md_${m.id}" ${m.done?'checked':''}/> منتهية</label>
+      <button class="btn-save" onclick="saveMatch(${m.id})" style="padding:5px 10px;font-size:12px">حفظ</button>
+      <button class="btn-danger" onclick="deleteMatch(${m.id})">حذف</button>
+    </div>`;
+  });
+  document.getElementById('matchesAdmin').innerHTML = h;
+}
+async function saveMatch(id) {
+  const body = {
+    round: document.getElementById('mr_'+id).value,
+    team1: document.getElementById('mt1_'+id).value,
+    team2: document.getElementById('mt2_'+id).value,
+    score1: parseInt(document.getElementById('ms1_'+id).value)||0,
+    score2: parseInt(document.getElementById('ms2_'+id).value)||0,
+    done: document.getElementById('md_'+id).checked,
+  };
+  const r = await fetch('/api/admin/matches/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (r.ok) { showMsg('تم حفظ المباراة'); await loadData(); renderMatchesAdmin(); renderBracket(); }
+  else showErr('فشل');
+}
+async function deleteMatch(id) {
+  const r = await fetch('/api/admin/matches/'+id,{method:'DELETE'});
+  if (r.ok) { showMsg('تم الحذف'); await loadData(); renderMatchesAdmin(); renderBracket(); }
+  else showErr('فشل');
+}
+function addMatch() {
+  fetch('/api/admin/matches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({round:'ربع النهائي',team1:'فريق 1',team2:'فريق 2',score1:0,score2:0,done:false})})
+    .then(()=>loadData().then(()=>renderMatchesAdmin()));
+}
+
+init();
+</script>
+</body>
+</html>
